@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProjectEmployee_Intership.Core\ProjectEmployee_Intership.Core.csproj" />
+    <ProjectReference Include="..\ProjectEmployee_Intership.Database\ProjectEmployee_Intership.Database.csproj" />
   </ItemGroup>
 
 </Project>

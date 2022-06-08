@@ -1,7 +1,7 @@
 ﻿using ProjectEmployee_Intership.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Intership_ProjectTeam4.Database
+namespace ProjectEmployee_Intership.Core.Entities
 {
     public class Project
     {
@@ -12,7 +12,7 @@ namespace Intership_ProjectTeam4.Database
         public DateTime FinishDate { get; set; }
         public StatusProject Status { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public List<ProjectUser> ProjectUsers { get; set; }
+        public List<ProjectEmployee> ProjectUsers { get; set; }
         public List<Tasks> Tasks { get; set; }
         
     }
