@@ -1,4 +1,6 @@
-﻿namespace Intership_ProjectTeam4.Database
+﻿using ProjectEmployee_Intership.Core.Entities;
+
+namespace ProjectEmployee_Intership.Core.Entities
 {
     public class User
     {
@@ -7,10 +9,9 @@
         public Role Role { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public bool IsDeleted { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public List<ProjectUser> Projects { get; set; }
-        public List<Tasks> Tasks { get; set; }
+        public bool IsDeleted { get; set; }=false;
+        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; }
     }
 }
+    
