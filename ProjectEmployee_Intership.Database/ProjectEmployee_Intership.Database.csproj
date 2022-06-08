@@ -19,4 +19,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectEmployee_Intership.Core\ProjectEmployee_Intership.Core.csproj" />
+  </ItemGroup>
+
 </Project>
