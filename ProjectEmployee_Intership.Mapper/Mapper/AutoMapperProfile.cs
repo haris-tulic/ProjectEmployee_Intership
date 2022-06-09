@@ -15,6 +15,9 @@ namespace ProjectEmployee_Intership.Mapper.Mapper
         {
             CreateMap<AddTaskRequest, Tasks>().ReverseMap();
             CreateMap<Tasks, GetTaskRequest>().ReverseMap();
+            CreateMap<Project,GetProjectRequest>().ReverseMap();
+            CreateMap<AddProjectRequest, Project>().ReverseMap();
+
         }
     }
 }
