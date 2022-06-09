@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 var connection = builder.Configuration.GetConnectionString("ProjectEmployee");
 builder.Services.AddDbContext<ProjectUserContext>(options => options.UseSqlServer(connection));
-builder.Services.AddScoped<TaskService,TaskService>();
+builder.Services.AddScoped<ITaskService,TaskService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
