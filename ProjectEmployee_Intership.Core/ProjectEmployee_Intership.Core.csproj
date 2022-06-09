@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Helper\" />
     <Folder Include="Validator\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProjectEmployee_Intership.Common\ProjectEmployee_Intership.Common.csproj" />
+    <ProjectReference Include="..\ProjectEmployee_Intership.Database\ProjectEmployee_Intership.Database.csproj" />
   </ItemGroup>
 
 </Project>

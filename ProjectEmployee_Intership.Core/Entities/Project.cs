@@ -1,8 +1,8 @@
-﻿using Intership_ProjectTeam4.Enum;
-using ProjectEmployee_Intership.Common.Enums;
+﻿
 using System.ComponentModel.DataAnnotations;
+using ProjectEmployee_Intership.Common.Enums;
 
-namespace Intership_ProjectTeam4.Database
+namespace ProjectEmployee_Intership.Entities
 {
     public class Project
     {

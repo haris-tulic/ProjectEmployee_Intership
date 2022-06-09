@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectEmployee_Intership.Database\ProjectEmployee_Intership.Database.csproj" />
+    <ProjectReference Include="..\ProjectEmployee_Intership.Service\ProjectEmployee_Intership.Service.csproj" />
+  </ItemGroup>
+
 </Project>

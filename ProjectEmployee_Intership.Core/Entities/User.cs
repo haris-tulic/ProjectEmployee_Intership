@@ -1,4 +1,6 @@
-﻿namespace Intership_ProjectTeam4.Database
+﻿using ProjectEmployee_Intership.Core.Entities;
+
+namespace ProjectEmployee_Intership.Entities
 {
     public class User
     {
@@ -12,5 +14,6 @@
         public string LastName { get; set; }
         public List<ProjectEmployee> Projects { get; set; }
         public List<Tasks> Tasks { get; set; }
+        public string Username { get; set; }
     }
 }

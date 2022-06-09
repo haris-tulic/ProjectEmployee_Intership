@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ProjectEmployee_Intership.Entities;
 
-namespace Intership_ProjectTeam4.Database
+namespace ProjectEmployee_Intership.Core.Entities
 {
     public class Role
     {
