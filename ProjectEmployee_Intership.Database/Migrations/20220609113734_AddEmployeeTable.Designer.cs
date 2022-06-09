@@ -4,6 +4,7 @@ using Intership_ProjectTeam4.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProjectEmployee_Intership.Database.Migrations
 {
     [DbContext(typeof(ProjectUserContext))]
-    partial class ProjectUserContextModelSnapshot : ModelSnapshot
+    [Migration("20220609113734_AddEmployeeTable")]
+    partial class AddEmployeeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -8,13 +8,16 @@ using System.Threading.Tasks;
 
 namespace ProjectEmployee_Intership.Service.Interfaces
 {
-    internal interface ITaskService
+    public interface ITaskService
     {
-        Task<List<TasksDto>> GetAllTasks(GetTaskRequest search);
+        Task<List<TasksDto>> GetAllTasks();
+
+        Task<List<TasksDto>> GetAllTasksByParamaters(GetTaskRequest search);
         Task<TasksDto> GetTaskById(int id);
         Task<TasksDto> AddNewTask(AddTaskRequest request);
         Task<TasksDto> UpdateTask(AddTaskRequest request, int id);
         Task<TasksDto> DeleteTask(int id);
-
+        Task<TasksDto> AssingTaskToUser(int userId, int projectId, int taskId);
+        Task<TasksDto> FinishTask(int id);
     }
 }

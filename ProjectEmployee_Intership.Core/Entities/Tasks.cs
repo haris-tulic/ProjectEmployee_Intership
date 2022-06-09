@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectEmployee_Intership.Core.Entities
 {
@@ -11,6 +12,7 @@ namespace ProjectEmployee_Intership.Core.Entities
         public string Description { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
+        [ForeignKey("User")]
         public int UserId { get; set; }
         public User User { get; set; }
         public bool IsFinished { get; set; } = false;

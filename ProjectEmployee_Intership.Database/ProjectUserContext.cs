@@ -14,5 +14,10 @@ namespace Intership_ProjectTeam4.Database
         public DbSet<Role> Roles { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Employee> Employees { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Employee>().
+        //}
     }
 }

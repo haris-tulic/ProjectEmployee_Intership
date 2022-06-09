@@ -1,5 +1,8 @@
 using Intership_ProjectTeam4.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ProjectEmployee_Intership.Service.Interfaces;
+using ProjectEmployee_Intership.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +14,8 @@ var connection = builder.Configuration.GetConnectionString("ProjectEmployee");
 builder.Services.AddDbContext<ProjectUserContext>(options => options.UseSqlServer(connection));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ITaskService, TaskService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

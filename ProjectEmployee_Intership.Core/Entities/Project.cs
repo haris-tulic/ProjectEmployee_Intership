@@ -10,10 +10,11 @@ namespace ProjectEmployee_Intership.Core.Entities
         public string ProjectName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
-        public StatusProject Status { get; set; }
+        public StatusProject Status { get; set; } = StatusProject.Active;
         public bool IsDeleted { get; set; } = false;
         public List<ProjectEmployee> ProjectUsers { get; set; }
         public List<Tasks> Tasks { get; set; }
-        
+        public List<User> Users { get; set; }
+
     }
 }
