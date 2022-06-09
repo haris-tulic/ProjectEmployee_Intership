@@ -13,5 +13,6 @@ namespace ProjectEmployee_Intership.Core.Models.Request
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
         public StatusProject Status { get; set; }
+        public string FirstName { get; set; }
     }
 }
