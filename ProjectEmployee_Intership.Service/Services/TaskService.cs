@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
-using Intership_ProjectTeam4.Database;
 using Microsoft.EntityFrameworkCore;
 using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
+using ProjectEmployee_Intership.Entities;
 using ProjectEmployee_Intership.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectEmployee_Intership.Service.Services
 {

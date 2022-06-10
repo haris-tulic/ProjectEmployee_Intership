@@ -1,4 +1,6 @@
-﻿namespace Intership_ProjectTeam4.Database
+﻿using ProjectEmployee_Intership.Core.Entities;
+
+namespace ProjectEmployee_Intership.Database
 {
     public class User
     {

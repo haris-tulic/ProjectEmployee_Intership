@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using ProjectEmployee_Intership.Core.Entities;
 
 namespace ProjectEmployee_Intership.Entities
