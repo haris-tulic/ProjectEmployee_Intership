@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Intership_ProjectTeam4.Database;
 using Microsoft.EntityFrameworkCore;
+using ProjectEmployee_intership.Database;
 using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
@@ -58,7 +58,7 @@ namespace ProjectEmployee_Intership.Service.Services
                 var userExist =await _context.Users.FirstOrDefaultAsync(x => x.Id == userId && !x.IsDeleted);
                 var userOnProject = await _context.Projects.FirstOrDefaultAsync(x => x.Users.Contains(userExist) && x.Id==projectId && !x.IsDeleted);
                 var task=await _context.Tasks.FirstOrDefaultAsync(x=>!x.IsDeleted && x.Id==taskId);
-                userExist.TasksId = taskId;
+                userExist.Tasks.Add(task);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<TasksDto>(task);
             }
@@ -112,7 +112,7 @@ namespace ProjectEmployee_Intership.Service.Services
         {
             try
             {
-                var tasks = await _context.Tasks.Include(x => x.Project).Include(x => x.User).Where(x=>!x.IsDeleted).ToListAsync();
+                var tasks = await _context.Tasks.Include(x => x.Project).Include(x => x.Users).Where(x=>!x.IsDeleted).ToListAsync();
                 if (tasks == null)
                 {
                     throw new ArgumentException("Tasks doesn't exists!");
@@ -130,9 +130,9 @@ namespace ProjectEmployee_Intership.Service.Services
         {
             try
             {
-                var tasks = await _context.Tasks.Include(x => x.Project).Include(x => x.User).
-                    Where(x=>( x.UserId == search.UserId 
-                    || x.Description==search.Description
+                var tasks = await _context.Tasks.Include(x => x.Project).Include(x => x.Users).
+                    Where(x=>( 
+                       x.Description==search.Description
                     || x.DeadLine.Equals(search.DeadLine)
                     || x.IsFinished==search.IsFinished
                     || x.Name==search.Name)
