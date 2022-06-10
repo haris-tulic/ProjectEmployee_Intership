@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProjectEmployee_Intership.Entities
+namespace ProjectEmployee_Intership.Core.Entities
 {
     public class ProjectEmployee
     {

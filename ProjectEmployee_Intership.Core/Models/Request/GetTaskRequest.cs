@@ -11,8 +11,8 @@ namespace ProjectEmployee_Intership.Core.Models.Request
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public ProjectDto Project { get; set; }
-        public UserDto User { get; set; }
+        public int ProjectId { get; set; }
+        public int UserId { get; set; }
         public bool IsFinished { get; set; }
         public DateTime DeadLine { get; set; }
     }
