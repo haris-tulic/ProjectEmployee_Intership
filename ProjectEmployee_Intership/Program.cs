@@ -1,6 +1,6 @@
-using Intership_ProjectTeam4.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectEmployee_intership.Database;
 using ProjectEmployee_Intership.Service.Interfaces;
 using ProjectEmployee_Intership.Service.Services;
 

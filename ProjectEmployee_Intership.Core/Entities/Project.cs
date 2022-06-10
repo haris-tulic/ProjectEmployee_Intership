@@ -12,7 +12,7 @@ namespace ProjectEmployee_Intership.Core.Entities
         public DateTime FinishDate { get; set; }
         public StatusProject Status { get; set; } = StatusProject.Active;
         public bool IsDeleted { get; set; } = false;
-        public List<ProjectEmployee> ProjectUsers { get; set; }
+        public List<Employee> Employee { get; set; }
         public List<Tasks> Tasks { get; set; }
         public List<User> Users { get; set; }
 

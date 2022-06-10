@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using Intership_ProjectTeam4.Database;
 using Microsoft.EntityFrameworkCore;
+using ProjectEmployee_intership.Database;
+using ProjectEmployee_Intership.Core.Entities;
+using ProjectEmployee_Intership.Core.Helper;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
 using ProjectEmployee_Intership.Service.Interfaces;
@@ -48,16 +50,18 @@ namespace ProjectEmployee_Intership.Service.Services
             }
         }
 
-        public async Task<List<ProjectDto>> GetAllProjects()
+        public PagedList<ProjectDto> GetAllProjects(GetProjectRequest search)
         {
             try
             {
-                var listActiveProject = await _context.Projects.Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active).ToListAsync();
+                var listActiveProject = _context.Projects as IQueryable<Project>;
+                listActiveProject =  listActiveProject.Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active);
                 if (listActiveProject==null)
                 {
                     throw new ArgumentException("Projects doens't exist!");
                 }
-                return _mapper.Map<List<ProjectDto>>(listActiveProject);
+                var listM= _mapper.Map<IQueryable<ProjectDto>>(listActiveProject);
+                return PagedList<ProjectDto>.Create(listM, search.PageNumber, search.PageSize);
             }
             catch (Exception ex)
             {
@@ -66,9 +70,35 @@ namespace ProjectEmployee_Intership.Service.Services
             }
         }
 
-        public Task<List<ProjectDto>> GetAllProjectsWithFillters(GetProjectRequest search)
+        public async Task<List<ProjectDto>> GetAllProjectsWithFillters(GetProjectRequest search)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var listProjects = _context.Projects.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(search.ProjectName))
+                {
+                   search.ProjectName = search.ProjectName.Trim();
+                   listProjects= listProjects.Where(x => x.ProjectName==search.ProjectName);
+                }
+                if (!string.IsNullOrWhiteSpace(search.FirstName))
+                {
+                    search.FirstName = search.FirstName.Trim();
+                    var employee =await _context.Employees.FirstOrDefaultAsync(x => x.FirstName.Contains(search.FirstName));
+                    if (employee==null)
+                    {
+                        throw new ArgumentException("Employee doesn't exist!");
+                    }
+                    var list = await _context.Projects.Include(x => x.Employee).Where(x => x.Employee.Contains(employee)).ToListAsync();
+                    return _mapper.Map<List<ProjectDto>>(list);
+                }
+                var listProjectsM = _mapper.Map<List<ProjectDto>>(listProjects);
+                return listProjectsM;
+            }
+            catch (Exception ex)
+            {
+
+                throw new ArgumentException(ex.Message);
+            }
         }
 
         public Task<ProjectDto> GetProjectById(int id)
@@ -76,9 +106,24 @@ namespace ProjectEmployee_Intership.Service.Services
             throw new NotImplementedException();
         }
 
-        public Task<ProjectDto> UpdateProject(AddProjectRequest request, int id)
+        public async Task<ProjectDto> UpdateProject(AddProjectRequest request, int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var projectExist = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+                if (projectExist==null)
+                {
+                    throw new ArgumentException("Project doesn't exist!");
+                }
+                _mapper.Map(request, projectExist);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<ProjectDto>(projectExist);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+           
         }
     }
 }

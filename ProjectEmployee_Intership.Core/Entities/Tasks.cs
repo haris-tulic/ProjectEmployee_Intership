@@ -12,9 +12,7 @@ namespace ProjectEmployee_Intership.Core.Entities
         public string Description { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public List<User> Users { get; set; }
         public bool IsFinished { get; set; } = false;
         public DateTime DeadLine { get; set; }
     }
