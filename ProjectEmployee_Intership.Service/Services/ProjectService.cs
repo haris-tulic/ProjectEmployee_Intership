@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ProjectEmployee_intership.Database;
+using ProjectEmployee_Intership.Core.Entities;
+using ProjectEmployee_Intership.Core.Helper;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
 using ProjectEmployee_Intership.Entities;
@@ -18,9 +21,43 @@ namespace ProjectEmployee_Intership.Service.Services
             _mapper = mapper;
         }
 
-        public Task<ProjectDto> AddProject(AddProjectRequest newProject)
+        public async Task<ProjectDto> AddProject(AddProjectRequest newProject)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var project = _mapper.Map<Project>(newProject);
+
+                var taskExist = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == newProject.TaskId && !t.IsDeleted && !t.IsFinished);
+                if (taskExist == null)
+                {
+                    throw new ArgumentException("Task doesn't exist!");
+                }
+
+                var employeeExist = await _context.Employees.FirstOrDefaultAsync(e => e.Id == newProject.EmployeeId);
+                if (employeeExist == null)
+                {
+                    throw new ArgumentException("Employee doesn't exist!");
+                }
+
+                var userExist = await _context.Users.FirstOrDefaultAsync(u => u.Id == newProject.UserId && !u.IsDeleted);
+                if (userExist == null)
+                {
+                    throw new ArgumentException("User doesn't exist!");
+                }
+                project.Employee.Add(employeeExist);
+                project.Tasks.Add(taskExist);
+                project.Users.Add(userExist);
+                _context.Projects.Add(project);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<ProjectDto>(project);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ArgumentException(ex.Message);
+            }
+            
+
         }
 
         public async Task<ProjectDto> DeleteProject(int id)
@@ -43,16 +80,20 @@ namespace ProjectEmployee_Intership.Service.Services
             }
         }
 
-        public async Task<List<ProjectDto>> GetAllProjects()
+        public PagedList<ProjectDto> GetAllProjects(GetProjectRequest search)
         {
             try
             {
-                var listActiveProject = await _context.Projects.Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active).ToListAsync();
-                if (listActiveProject==null)
+                var listActiveProject = _context.Projects as IQueryable<Project>;
+                listActiveProject =  listActiveProject.
+                    Include(p=>p.Tasks).Include(p=>p.Users).Include(p=>p.Employee)
+                    .Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active);
+                if (listActiveProject == null)
                 {
                     throw new ArgumentException("Projects doens't exist!");
                 }
-                return _mapper.Map<List<ProjectDto>>(listActiveProject);
+                var listM= _mapper.Map<IQueryable<ProjectDto>>(listActiveProject);
+                return PagedList<ProjectDto>.Create(listM, search.PageNumber, search.PageSize);
             }
             catch (Exception ex)
             {
@@ -61,19 +102,65 @@ namespace ProjectEmployee_Intership.Service.Services
             }
         }
 
-        public Task<List<ProjectDto>> GetAllProjectsWithFillters(GetProjectRequest search)
+        public async Task<List<ProjectDto>> GetAllProjectsWithFillters(GetProjectRequest search)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var listProjects = _context.Projects.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(search.ProjectName))
+                {
+                   search.ProjectName = search.ProjectName.Trim();
+                   listProjects= listProjects.Where(x => x.ProjectName==search.ProjectName);
+                }
+                if (!string.IsNullOrWhiteSpace(search.FirstName))
+                {
+                    search.FirstName = search.FirstName.Trim();
+                    var employee =await _context.Employees.FirstOrDefaultAsync(x => x.FirstName.Contains(search.FirstName));
+                    if (employee==null)
+                    {
+                        throw new ArgumentException("Employee doesn't exist!");
+                    }
+                    var list = await _context.Projects.Include(x => x.Employee).Where(x => x.Employee.Contains(employee)).ToListAsync();
+                    return _mapper.Map<List<ProjectDto>>(list);
+                }
+                var listProjectsM = _mapper.Map<List<ProjectDto>>(listProjects);
+                return listProjectsM;
+            }
+            catch (Exception ex)
+            {
+
+                throw new ArgumentException(ex.Message);
+            }
         }
 
-        public Task<ProjectDto> GetProjectById(int id)
+        public async Task<ProjectDto> GetProjectById(int id)
         {
-            throw new NotImplementedException();
+            var project = await _context.Projects.FirstOrDefaultAsync(x=>x.Id==id);
+            if (project==null)
+            {
+                throw new ArgumentException("Project doesn't exist");
+            }
+            return _mapper.Map<ProjectDto>(project);
         }
 
-        public Task<ProjectDto> UpdateProject(AddProjectRequest request, int id)
+        public async Task<ProjectDto> UpdateProject(AddProjectRequest request, int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var projectExist = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+                if (projectExist==null)
+                {
+                    throw new ArgumentException("Project doesn't exist!");
+                }
+                _mapper.Map(request, projectExist);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<ProjectDto>(projectExist);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+           
         }
     }
 }

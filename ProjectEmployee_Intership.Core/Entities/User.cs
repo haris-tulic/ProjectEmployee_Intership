@@ -17,8 +17,7 @@ namespace ProjectEmployee_Intership.Database
         public int  ProjectId { get; set; }
         public Project Project { get; set; }
         [ForeignKey("Tasks")]
-        public int TasksId { get; set; }
-        public Tasks Task { get; set; }
+        public List<Tasks> Tasks { get; set; }
     }
 }
     

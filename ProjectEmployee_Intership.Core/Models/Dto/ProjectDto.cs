@@ -14,7 +14,9 @@ namespace ProjectEmployee_Intership.Core.Models.Dto
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
         public StatusProject Status { get; set; }
-        public List<ProjectEmployeeDto> Employees { get; set; }
+        public bool IsDeleted { get; set; }
+        public List<EmployeeDto> Employees { get; set; }
         public List<TasksDto> Tasks { get; set; }
+        public List<UserDto> Users { get; set; }
     }
 }

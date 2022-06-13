@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ProjectEmployee_intership.Database;
+using ProjectEmployee_Intership.Service.Interfaces;
+using ProjectEmployee_Intership.Service.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
