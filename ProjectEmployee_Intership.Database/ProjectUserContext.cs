@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using ProjectEmployee_Intership.Core.Entities;
+using ProjectEmployee_Intership.Database;
+
 
 namespace ProjectEmployee_intership.Database
 {

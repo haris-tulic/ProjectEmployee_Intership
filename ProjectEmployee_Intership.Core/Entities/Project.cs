@@ -1,5 +1,6 @@
-﻿using ProjectEmployee_Intership.Common.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using ProjectEmployee_Intership.Common.Enums;
+using ProjectEmployee_Intership.Database;
 
 namespace ProjectEmployee_Intership.Core.Entities
 {
