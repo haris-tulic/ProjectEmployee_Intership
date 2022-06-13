@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjectEmployee_Intership.Core.Helper;
+using ProjectEmployee_Intership.Database;
 using ProjectEmployee_Intership.Dto.User;
-using ProjectEmployee_Intership.Entities;
 using ProjectEmployee_Intership.Models;
+using ProjectEmployee_Intership.Service.Interfaces;
 
 namespace ProjectEmployee_Intership.Controllers
 {

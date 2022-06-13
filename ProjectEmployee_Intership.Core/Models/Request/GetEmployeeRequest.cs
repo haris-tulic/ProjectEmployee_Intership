@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProjectEmployee_Intership.Core.Entities;
+using ProjectEmployee_Intership.Database;
 
 namespace ProjectEmployee_Intership.Core.Models.Request
 {
@@ -11,5 +8,6 @@ namespace ProjectEmployee_Intership.Core.Models.Request
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int UserId { get; set; }
-    }
+      
+     }
 }

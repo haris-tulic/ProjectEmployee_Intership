@@ -5,7 +5,6 @@ using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Helper;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
-using ProjectEmployee_Intership.Entities;
 using ProjectEmployee_Intership.Service.Interfaces;
 
 namespace ProjectEmployee_Intership.Service.Services

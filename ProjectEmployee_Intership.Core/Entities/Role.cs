@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ProjectEmployee_Intership.Entities;
+using ProjectEmployee_Intership.Database;
+
 
 namespace ProjectEmployee_Intership.Core.Entities
 {

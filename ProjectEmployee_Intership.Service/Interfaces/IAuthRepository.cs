@@ -1,13 +1,11 @@
-﻿
-
-using ProjectEmployee_Intership.Entities;
+﻿using ProjectEmployee_Intership.Database;
 using ProjectEmployee_Intership.Models;
 
-namespace ProjectEmployee_Intership.Core.Helper
+namespace ProjectEmployee_Intership.Service.Interfaces
 {
- 
 
-        public interface IAuthRepository
+
+    public interface IAuthRepository
         {
             Task<ServiceResponse<int>> Register(User user, string password);
             Task<ServiceResponse<string>> Login(string username, string password);

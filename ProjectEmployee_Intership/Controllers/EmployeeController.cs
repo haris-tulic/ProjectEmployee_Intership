@@ -3,9 +3,11 @@ using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
 using ProjectEmployee_Intership.Dto;
 using ProjectEmployee_Intership.Core.Models.Dto;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectEmployee_IntershipAPI.Controllers
 {
+    [Authorize]
     [Route("api/[Controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase

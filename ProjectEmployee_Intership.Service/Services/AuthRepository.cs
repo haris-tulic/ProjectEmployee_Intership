@@ -1,17 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProjectEmployee_Intership.Core.Helper;
-
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using ProjectEmployee_intership.Database;
+using ProjectEmployee_Intership.Database;
 using ProjectEmployee_Intership.Models;
+using ProjectEmployee_Intership.Service.Interfaces;
 
-namespace ProjectEmployee_Intership.Entities
+namespace ProjectEmployee_Intership.Service.Services
 {
     public class AuthRepository : IAuthRepository
+
     {
-        private readonly DataContext _context;
-        
-        public AuthRepository(DataContext context)
+        private readonly ProjectUserContext _context;
+        private readonly IConfiguration _configuration;
+        public AuthRepository(ProjectUserContext context, IConfiguration configuration)
         {
-            
+            _configuration = configuration;
             _context = context;
 
         }
@@ -30,11 +36,13 @@ namespace ProjectEmployee_Intership.Entities
                 response.Success = false;
                 response.Message = "Wrong password.";
             }
-
+            else
+            {
+                response.Data = CreateToken(user);
+            }
 
             return response;
         }
-
         public async Task<ServiceResponse<int>> Register(User user, string password)
         {
             ServiceResponse<int> response = new ServiceResponse<int>();
@@ -89,6 +97,34 @@ namespace ProjectEmployee_Intership.Entities
                 return true;
             }
         }
+
+        private string CreateToken(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username)
+            };
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokendDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = System.DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokendDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
     }
 }
 
+    
+
+    

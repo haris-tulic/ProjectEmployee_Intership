@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProjectEmployee_Intership.Common\ProjectEmployee_Intership.Common.csproj" />
-    <ProjectReference Include="..\ProjectEmployee_Intership.Database\ProjectEmployee_Intership.Database.csproj" />
   </ItemGroup>
 
 </Project>
