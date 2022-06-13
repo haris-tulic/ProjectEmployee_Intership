@@ -25,9 +25,43 @@ namespace ProjectEmployee_Intership.Service.Services
             _mapper = mapper;
         }
 
-        public Task<ProjectDto> AddProject(AddProjectRequest newProject)
+        public async Task<ProjectDto> AddProject(AddProjectRequest newProject)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var project = _mapper.Map<Project>(newProject);
+
+                var taskExist = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == newProject.TaskId && !t.IsDeleted && !t.IsFinished);
+                if (taskExist == null)
+                {
+                    throw new ArgumentException("Task doesn't exist!");
+                }
+
+                var employeeExist = await _context.Employees.FirstOrDefaultAsync(e => e.Id == newProject.EmployeeId);
+                if (employeeExist == null)
+                {
+                    throw new ArgumentException("Employee doesn't exist!");
+                }
+
+                var userExist = await _context.Users.FirstOrDefaultAsync(u => u.Id == newProject.UserId && !u.IsDeleted);
+                if (userExist == null)
+                {
+                    throw new ArgumentException("User doesn't exist!");
+                }
+                project.Employee.Add(employeeExist);
+                project.Tasks.Add(taskExist);
+                project.Users.Add(userExist);
+                _context.Projects.Add(project);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<ProjectDto>(project);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ArgumentException(ex.Message);
+            }
+            
+
         }
 
         public async Task<ProjectDto> DeleteProject(int id)
@@ -55,8 +89,10 @@ namespace ProjectEmployee_Intership.Service.Services
             try
             {
                 var listActiveProject = _context.Projects as IQueryable<Project>;
-                listActiveProject =  listActiveProject.Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active);
-                if (listActiveProject==null)
+                listActiveProject =  listActiveProject.
+                    Include(p=>p.Tasks).Include(p=>p.Users).Include(p=>p.Employee)
+                    .Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active);
+                if (listActiveProject == null)
                 {
                     throw new ArgumentException("Projects doens't exist!");
                 }
@@ -101,9 +137,14 @@ namespace ProjectEmployee_Intership.Service.Services
             }
         }
 
-        public Task<ProjectDto> GetProjectById(int id)
+        public async Task<ProjectDto> GetProjectById(int id)
         {
-            throw new NotImplementedException();
+            var project = await _context.Projects.FirstOrDefaultAsync(x=>x.Id==id);
+            if (project==null)
+            {
+                throw new ArgumentException("Project doesn't exist");
+            }
+            return _mapper.Map<ProjectDto>(project);
         }
 
         public async Task<ProjectDto> UpdateProject(AddProjectRequest request, int id)
