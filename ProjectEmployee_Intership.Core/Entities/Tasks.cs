@@ -11,7 +11,6 @@ namespace ProjectEmployee_Intership.Core.Entities
         public string Name { get; set; }
         public bool IsDeleted { get; set; } = false;
         public string Description { get; set; }
-        public int ProjectId { get; set; }
         public Project Project { get; set; }
         public List<User> Users { get; set; }
         public bool IsFinished { get; set; } = false;

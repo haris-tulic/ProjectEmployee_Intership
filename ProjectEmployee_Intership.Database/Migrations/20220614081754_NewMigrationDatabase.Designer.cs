@@ -12,8 +12,8 @@ using ProjectEmployee_intership.Database;
 namespace ProjectEmployee_Intership.Database.Migrations
 {
     [DbContext(typeof(ProjectUserContext))]
-    [Migration("20220613150054_NewDatabase")]
-    partial class NewDatabase
+    [Migration("20220614081754_NewMigrationDatabase")]
+    partial class NewMigrationDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -70,12 +70,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Employees");
                 });
@@ -164,16 +159,13 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.User", b =>
+            modelBuilder.Entity("ProjectEmployee_Intership.Database.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -192,9 +184,11 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
 
@@ -248,17 +242,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Employee", b =>
-                {
-                    b.HasOne("ProjectEmployee_Intership.Core.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Tasks", b =>
                 {
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", "Project")
@@ -270,14 +253,8 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.User", b =>
+            modelBuilder.Entity("ProjectEmployee_Intership.Database.User", b =>
                 {
-                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", "Project")
                         .WithMany("Users")
                         .HasForeignKey("ProjectId")
@@ -289,8 +266,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
 
                     b.Navigation("Project");
 
@@ -305,7 +280,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProjectEmployee_Intership.Core.Entities.User", null)
+                    b.HasOne("ProjectEmployee_Intership.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
