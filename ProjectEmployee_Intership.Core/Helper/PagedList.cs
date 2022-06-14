@@ -8,7 +8,6 @@ namespace ProjectEmployee_Intership.Core.Helper
 {
     public  class PagedList<T>:List<T>
     {
-        
 
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }

@@ -79,7 +79,7 @@ namespace ProjectEmployee_Intership.Service.Services
             }
         }
 
-        public PagedList<ProjectDto> GetAllProjects(GetProjectRequest search)
+        public async Task<List<ProjectDto>> GetAllProjects(int ?pageNumber ,int ?pageSize)
         {
             try
             {
@@ -91,8 +91,10 @@ namespace ProjectEmployee_Intership.Service.Services
                 {
                     throw new ArgumentException("Projects doens't exist!");
                 }
-                var listM= _mapper.Map<IQueryable<ProjectDto>>(listActiveProject);
-                return PagedList<ProjectDto>.Create(listM, search.PageNumber, search.PageSize);
+                var pgNumber = pageNumber ?? 1;
+                var pgSize = pageSize ?? 5;
+                var list= await listActiveProject.Skip(pgSize * (pgNumber - 1)).Take(pgSize).ToListAsync();
+                return _mapper.Map<List<ProjectDto>>(list);
             }
             catch (Exception ex)
             {

@@ -17,7 +17,8 @@ namespace ProjectEmployee_Intership.Core.Entities
         public string LastName { get; set; }
         public List<Project> Projects { get; set; }
         public List<Tasks> Tasks { get; set; }
-       
+
+        [ForeignKey("User")]
         public int UserId { get; set; }
         public User User { get; set; }
     }

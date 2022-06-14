@@ -23,5 +23,6 @@ namespace ProjectEmployee_Intership.Core.Models.Request
             get { return _pageSize; }
             set { _pageSize = (value > maxSize) ? maxSize : value; }
         }
+        public string OrderBy { get; set; }
     }
 }

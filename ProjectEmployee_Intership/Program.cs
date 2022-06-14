@@ -44,12 +44,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+
+    app.UseMiddleware<ExceptionMiddlware>();
+
     app.UseSwagger();
+
     app.UseSwaggerUI();
 }
 

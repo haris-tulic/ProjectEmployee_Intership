@@ -13,3 +13,4 @@ namespace ProjectEmployee_Intership.Core.Entities
         public List<User> Users { get; set; }
     }
 }
+    

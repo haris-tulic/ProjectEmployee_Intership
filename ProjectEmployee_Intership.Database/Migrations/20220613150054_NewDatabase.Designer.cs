@@ -12,8 +12,8 @@ using ProjectEmployee_intership.Database;
 namespace ProjectEmployee_Intership.Database.Migrations
 {
     [DbContext(typeof(ProjectUserContext))]
-    [Migration("20220609113734_AddEmployeeTable")]
-    partial class AddEmployeeTable
+    [Migration("20220613150054_NewDatabase")]
+    partial class NewDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,36 @@ namespace ProjectEmployee_Intership.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("EmployeeProject", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeId", "ProjectsId");
+
+                    b.HasIndex("ProjectsId");
+
+                    b.ToTable("EmployeeProject");
+                });
+
+            modelBuilder.Entity("EmployeeTasks", b =>
+                {
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TasksId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeesId", "TasksId");
+
+                    b.HasIndex("TasksId");
+
+                    b.ToTable("EmployeeTasks");
+                });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Employee", b =>
                 {
@@ -79,29 +109,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.ProjectEmployee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectEmployees");
-                });
-
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -137,9 +144,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -153,17 +157,9 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Tasks");
                 });
@@ -196,9 +192,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TasksId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -208,6 +201,51 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TasksUser", b =>
+                {
+                    b.Property<int>("TasksId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TasksId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("TasksUser");
+                });
+
+            modelBuilder.Entity("EmployeeProject", b =>
+                {
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EmployeeTasks", b =>
+                {
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Tasks", null)
+                        .WithMany()
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Employee", b =>
@@ -221,42 +259,15 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.ProjectEmployee", b =>
-                {
-                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", null)
-                        .WithMany("Projects")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", null)
-                        .WithMany("ProjectUsers")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Tasks", b =>
                 {
-                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", null)
-                        .WithMany("Tasks")
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProjectEmployee_Intership.Core.Entities.User", "User")
-                        .WithOne("Task")
-                        .HasForeignKey("ProjectEmployee_Intership.Core.Entities.Tasks", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Project");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.User", b =>
@@ -286,17 +297,23 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Employee", b =>
+            modelBuilder.Entity("TasksUser", b =>
                 {
-                    b.Navigation("Projects");
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Tasks", null)
+                        .WithMany()
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Tasks");
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Project", b =>
                 {
-                    b.Navigation("ProjectUsers");
-
                     b.Navigation("Tasks");
 
                     b.Navigation("Users");
@@ -305,12 +322,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Role", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.User", b =>
-                {
-                    b.Navigation("Task")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

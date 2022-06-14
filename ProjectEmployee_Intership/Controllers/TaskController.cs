@@ -17,7 +17,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             _service = service;
         }
         [HttpGet("[action]")]
-        public async Task<ActionResult<List<TasksDto>>> GetAllTasksByParamaters(GetTaskRequest search)
+        public async Task<ActionResult<List<TasksDto>>> GetAllTasksByParamaters([FromQuery] GetTaskRequest search)
         {
             var response=await _service.GetAllTasksByParamaters(search);
             if (response==null)
@@ -94,7 +94,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
         public async Task<ActionResult<TasksDto>> FinishTask(int id)
         {
             var response = await _service.FinishTask(id);
-            if (response==null)
+            if (response == null)
             {
                 return NotFound(response);
             }
