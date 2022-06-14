@@ -12,8 +12,8 @@ using ProjectEmployee_intership.Database;
 namespace ProjectEmployee_Intership.Database.Migrations
 {
     [DbContext(typeof(ProjectUserContext))]
-    [Migration("20220614081754_NewMigrationDatabase")]
-    partial class NewMigrationDatabase
+    [Migration("20220614133559_IsDeleted")]
+    partial class IsDeleted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,6 +65,9 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -217,13 +220,13 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", null)
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -232,13 +235,13 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", null)
                         .WithMany()
                         .HasForeignKey("EmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Tasks", null)
                         .WithMany()
                         .HasForeignKey("TasksId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -247,7 +250,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Project");
@@ -258,13 +261,13 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", "Project")
                         .WithMany("Users")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Project");
@@ -277,13 +280,13 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Tasks", null)
                         .WithMany()
                         .HasForeignKey("TasksId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProjectEmployee_Intership.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

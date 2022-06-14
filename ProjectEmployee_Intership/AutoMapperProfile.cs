@@ -3,13 +3,8 @@ using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
 using ProjectEmployee_Intership.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ProjectEmployee_Intership.Mapper.Mapper
+namespace ProjectEmployee_Intership
 {
     public class AutoMapperProfile:Profile
     {
