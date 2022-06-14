@@ -179,7 +179,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")

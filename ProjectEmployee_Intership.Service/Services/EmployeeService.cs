@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectEmployee_intership.Database;
-using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
@@ -64,11 +63,13 @@ namespace ProjectEmployee_Intership.Service.Services
        
 
 
-
-
-
-
-
-
-
+/*  public async Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto addEmployee)
+  {
+      var response = new ServiceResponse<List<GetEmployeeDto>>();
+      Employee employee = _mapper.Map<Employee>(AddEmployee);
+      _context.Employee.Add(addEmployee);
+      await _context.SaveChangesAsync();
+      response.Data= await _context.addEmployee.Select(uint)
+  }
+}*/
 

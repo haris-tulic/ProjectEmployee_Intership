@@ -12,7 +12,7 @@ namespace ProjectEmployee_Intership.Database
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool IsDeleted { get; set; }=false;
-        public Project Project { get; set; }
+        public Project? Project { get; set; }
         public List<Tasks> Tasks { get; set; }
         public string Username { get; set; }
     }

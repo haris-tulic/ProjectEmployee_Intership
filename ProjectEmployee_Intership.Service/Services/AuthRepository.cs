@@ -1,12 +1,13 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ProjectEmployee_intership.Database;
+using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Database;
 using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ProjectEmployee_Intership.Service.Services
 {
@@ -25,7 +26,7 @@ namespace ProjectEmployee_Intership.Service.Services
         public async Task<ServiceResponse<string>> Login(string username, string password)
         {
             var response = new ServiceResponse<string>();
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username.ToLower().Equals(username.ToLower()));
+            var user = await _context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Username.ToLower().Equals(username.ToLower()));
             if (user == null)
             {
                 response.Success = false;
@@ -43,7 +44,7 @@ namespace ProjectEmployee_Intership.Service.Services
 
             return response;
         }
-        public async Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<int>> Register(User user, string password, int roleId)
         {
             ServiceResponse<int> response = new ServiceResponse<int>();
             if (await UserExists(user.Username))
@@ -54,14 +55,29 @@ namespace ProjectEmployee_Intership.Service.Services
             }
 
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+            var role = await RoleExist(roleId);
+            if (role == null)
+            {
+                throw new ArgumentException("That role doesn't exist");
+            }
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-
+            user.Role = role;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             response.Data = user.Id;
             return response;
+        }
+
+        private async Task<Role> RoleExist(int roleId)
+        {
+            var roleExist = await _context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
+            if (roleExist == null)
+            {
+                return null;
+            }
+            return roleExist;
         }
 
         public async Task<bool> UserExists(string username)
@@ -103,7 +119,8 @@ namespace ProjectEmployee_Intership.Service.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role.Name)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -125,6 +142,5 @@ namespace ProjectEmployee_Intership.Service.Services
     }
 }
 
-    
 
-    
+

@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using ProjectEmployee_Intership.Service.Services;
+using ProjectEmployee_Intership.Dto;
 using ProjectEmployee_Intership.Core.Models.Dto;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectEmployee_Intership.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Route("api/[Controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
 
         private readonly IEmployeeService _employeeService;
-
-        public EmployeeController(EmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }
@@ -44,23 +44,12 @@ namespace ProjectEmployee_Intership.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+       
+       
 
     }
 
-}
+    }
 
 
 

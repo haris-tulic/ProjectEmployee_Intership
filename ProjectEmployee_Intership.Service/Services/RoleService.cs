@@ -5,11 +5,6 @@ using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
 using ProjectEmployee_Intership.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectEmployee_Intership.Service.Services
 {
@@ -47,8 +42,8 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<RoleDto> GetById(int id)
         {
-            var role=await _context.Roles.Include(x=>x.Users).FirstOrDefaultAsync(x=>x.Id==id && !x.IsDeleted);
-            if (role==null)
+            var role = await _context.Roles.Include(x => x.Users).FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (role == null)
             {
                 throw new ArgumentException("Role doesn't exist!");
             }
@@ -59,7 +54,7 @@ namespace ProjectEmployee_Intership.Service.Services
         {
             try
             {
-                var roles = await _context.Roles.Include(x=>x.Users).Where(x => !x.IsDeleted).ToListAsync();
+                var roles = await _context.Roles.Include(x => x.Users).Where(x => !x.IsDeleted).ToListAsync();
                 if (roles == null)
                 {
                     throw new ArgumentException("Roles doesn't exist!");
@@ -71,12 +66,12 @@ namespace ProjectEmployee_Intership.Service.Services
 
                 throw new ArgumentException(ex.Message);
             }
-           
+
         }
         private async Task<bool> RoleExist(AddRoleRequest role)
         {
             var roleExist = await _context.Roles.FirstOrDefaultAsync(x => x.Name.Contains(role.Name));
-            if (roleExist!=null)
+            if (roleExist != null)
             {
                 return true;
             }
