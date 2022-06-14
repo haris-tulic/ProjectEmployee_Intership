@@ -9,20 +9,32 @@ using ProjectEmployee_Intership.Service.Interfaces;
 
 namespace ProjectEmployee_Intership.Service.Services
 {
+
     public class EmployeeService : IEmployeeService
     {
         private ProjectUserContext _context;
         private IMapper _mapper;
-    
-     
-        public Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto addEmployee)
+
+        public async Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto addEmployee)
         {
-            throw new NotImplementedException();
+
+            {
+                var response = new ServiceResponse<List<GetEmployeeDto>>();
+                var Employee = _mapper.Map<Employee>(addEmployee);
+                _context.Employees.Add(Employee);
+                await _context.SaveChangesAsync();
+                response.Data = await _context.Employees.Select(u => _mapper.Map<GetEmployeeDto>(u)).ToListAsync();
+                return response;
+            }
         }
 
-        public Task<ServiceResponse<GetEmployeeDto>> GetAllEmployee()
+        public async Task<ServiceResponse<GetEmployeeDto>> GetAllEmployee()
         {
+            var response = new ServiceResponse<List<GetEmployeeDto>>();
+            var dbEmployee = await _context.Employees.Where(c => c.IsDeleted == false).ToListAsync();
             throw new NotImplementedException();
+
+
         }
 
         public async Task<ServiceResponse<GetEmployeeDto>> GetEmployeeById(int id)

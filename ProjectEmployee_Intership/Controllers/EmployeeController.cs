@@ -21,7 +21,7 @@ namespace ProjectEmployee_Intership.Controllers
             _employeeService = employeeService;
         }
         
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<ActionResult<ServiceResponse<GetEmployeeDto>>> GetAllEmploye()
         {
             return Ok(await _employeeService.GetAllEmployee());
@@ -29,7 +29,7 @@ namespace ProjectEmployee_Intership.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<GetEmployeeDto>>>> AddCharacter(AddEmployeeDto newEmployee)
         {
             return Ok(await _employeeService.AddEmployee(newEmployee));

@@ -80,7 +80,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             }
             return Ok(response);
         }
-        private string CreateProdjectsUri(GetProjectRequest paramaters,UriType type)
+        /*private string CreateProdjectsUri(GetProjectRequest paramaters,UriType type)
         {
             switch (type)
             {
@@ -119,8 +119,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
                         Status = paramaters.Status,
                         FirstName = paramaters.FirstName,
 
-                    });
+                    });*/
             }
         }
-    }
-}
+    
