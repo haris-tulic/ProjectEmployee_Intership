@@ -47,7 +47,7 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<RoleDto> GetById(int id)
         {
-            var role=await _context.Roles.FirstOrDefaultAsync(x=>x.Id==id && !x.IsDeleted);
+            var role=await _context.Roles.Include(x=>x.Users).FirstOrDefaultAsync(x=>x.Id==id && !x.IsDeleted);
             if (role==null)
             {
                 throw new ArgumentException("Role doesn't exist!");
@@ -59,7 +59,7 @@ namespace ProjectEmployee_Intership.Service.Services
         {
             try
             {
-                var roles = await _context.Roles.Where(x => !x.IsDeleted).ToListAsync();
+                var roles = await _context.Roles.Include(x=>x.Users).Where(x => !x.IsDeleted).ToListAsync();
                 if (roles == null)
                 {
                     throw new ArgumentException("Roles doesn't exist!");
