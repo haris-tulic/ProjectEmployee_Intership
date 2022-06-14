@@ -37,6 +37,21 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.ToTable("EmployeeProject");
                 });
 
+            modelBuilder.Entity("EmployeeTasks", b =>
+                {
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TasksId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeesId", "TasksId");
+
+                    b.HasIndex("TasksId");
+
+                    b.ToTable("EmployeeTasks");
+                });
+
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -125,9 +140,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -142,8 +154,6 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("ProjectId");
 
@@ -196,15 +206,15 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
             modelBuilder.Entity("TasksUser", b =>
                 {
-                    b.Property<int>("Tasks")
-                        .HasColumnType("int");
-
                     b.Property<int>("TasksId")
                         .HasColumnType("int");
 
-                    b.HasKey("Tasks", "TasksId");
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("TasksId");
+                    b.HasKey("TasksId", "UsersId");
+
+                    b.HasIndex("UsersId");
 
                     b.ToTable("TasksUser");
                 });
@@ -224,12 +234,23 @@ namespace ProjectEmployee_Intership.Database.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Tasks", b =>
+            modelBuilder.Entity("EmployeeTasks", b =>
                 {
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Employee", null)
-                        .WithMany("Tasks")
-                        .HasForeignKey("EmployeeId");
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.Tasks", null)
+                        .WithMany()
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Tasks", b =>
+                {
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
@@ -268,24 +289,16 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
             modelBuilder.Entity("TasksUser", b =>
                 {
-                    b.HasOne("ProjectEmployee_Intership.Database.User", null)
-                        .WithMany()
-                        .HasForeignKey("Tasks")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Tasks", null)
                         .WithMany()
                         .HasForeignKey("TasksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Employee", b =>
-                {
-                    b.Navigation("Tasks");
-
-                    b.Navigation("User")
+                    b.HasOne("ProjectEmployee_Intership.Core.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

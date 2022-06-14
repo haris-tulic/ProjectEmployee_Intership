@@ -11,7 +11,7 @@ namespace ProjectEmployee_Intership.Service.Interfaces
 {
     public interface IProjectService
     {
-        PagedList<ProjectDto> GetAllProjects(GetProjectRequest search);
+        Task<List<ProjectDto>> GetAllProjects(int ?pageNumber, int ?pageSize);
         Task<List<ProjectDto>> GetAllProjectsWithFillters(GetProjectRequest search);
         Task<ProjectDto> GetProjectById(int id);
         Task<ProjectDto> AddProject(AddProjectRequest newProject);

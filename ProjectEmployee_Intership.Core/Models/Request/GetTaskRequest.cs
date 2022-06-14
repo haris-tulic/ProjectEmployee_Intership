@@ -15,5 +15,8 @@ namespace ProjectEmployee_Intership.Core.Models.Request
         public int UserId { get; set; }
         public bool IsFinished { get; set; }
         public DateTime DeadLine { get; set; }
+        public int ? PageNumber { get; set; }
+        public int ? PageSize { get; set; }
+        public int EmployeeId { get; set; }
     }
 }

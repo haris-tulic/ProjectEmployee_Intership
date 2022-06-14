@@ -7,7 +7,6 @@
         
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<ProjectEmployeeDto> Projects { get; set; }
         public List<TasksDto> Tasks { get; set; }
     }
 }

@@ -16,5 +16,6 @@ namespace ProjectEmployee_Intership.Core.Entities
         public List<User> Users { get; set; }
         public bool IsFinished { get; set; } = false;
         public DateTime DeadLine { get; set; }
+        public List<Employee> Employees { get; set; }
     }
 }

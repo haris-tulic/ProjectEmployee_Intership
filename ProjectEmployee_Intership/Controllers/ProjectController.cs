@@ -19,21 +19,25 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             _service = service;
         }
         [HttpGet("[action]")]
-        public ActionResult<IEnumerable<ProjectDto>> GetAllProjects([FromQuery]GetProjectRequest search)
+        public async Task<ActionResult<List<ProjectDto>>> GetAllActiveProjects(int ?pageNumber, int ?pageSize)
         {
-            var response=_service.GetAllProjects(search);
-            var previousPageLink = response.HasPrevious ? CreateProdjectsUri(search, UriType.PreviousPage) : null;
-            var nextPageLink = response.HasNext ? CreateProdjectsUri(search, UriType.NextPage) : null;
-            var metaData = new
+            var response= await _service.GetAllProjects(pageNumber,pageSize);
+            if (response == null)
             {
-                totalCount = response.TotalCount,
-                pageSize = response.PageSize,
-                currentPage = response.CurrentPage,
-                totalPages = response.TotalPages,
-                previousPageLink,
-                nextPageLink,
-            };
-            Response.Headers.Add("Pagination", JsonSerializer.Serialize(metaData));
+                return NotFound(response);
+            }
+            //var previousPageLink = response.HasPrevious ? CreateProdjectsUri(search, UriType.PreviousPage) : null;
+            //var nextPageLink = response.HasNext ? CreateProdjectsUri(search, UriType.NextPage) : null;
+            //var metaData = new
+            //{
+            //    totalCount = response.TotalCount,
+            //    pageSize = response.PageSize,
+            //    currentPage = response.CurrentPage,
+            //    totalPages = response.TotalPages,
+            //    previousPageLink,
+            //    nextPageLink,
+            //};
+            //Response.Headers.Add("Pagination", JsonSerializer.Serialize(metaData));
             return Ok(response);
         }
         [HttpGet("[action]/{id}")]
@@ -81,7 +85,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             switch (type)
             {
                 case UriType.PreviousPage:
-                    return Url.Link("GetAllProjects", new
+                    return Url.Link("GetAllActiveProjects", new
                     {
                         pageNumber = paramaters.PageNumber - 1,
                         pageSize = paramaters.PageSize,
@@ -93,7 +97,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
 
                     });
                 case UriType.NextPage:
-                    return Url.Link("GetAllProjects", new
+                    return Url.Link("GetAllActiveProjects", new
                     {
                         pageNumber = paramaters.PageNumber + 1,
                         pageSize = paramaters.PageSize,
@@ -105,7 +109,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
 
                     });
                 default:
-                    return Url.Link("GetAllProjects", new
+                    return Url.Link("GetAllActiveProjects", new
                     {
                         pageNumber = paramaters.PageNumber,
                         pageSize = paramaters.PageSize,
