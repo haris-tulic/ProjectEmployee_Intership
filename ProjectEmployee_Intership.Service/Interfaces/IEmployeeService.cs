@@ -6,8 +6,8 @@ namespace ProjectEmployee_Intership.Service.Interfaces
     public interface IEmployeeService
     {
         Task<ServiceResponse<List<GetEmployeeDto>>> AddEmployee(AddEmployeeDto addEmployee);
-        Task<ServiceResponse<List<GetEmployeeDto>>> UpdateEmployee(UpdateEmployeeDto editEmployee);
-        Task<ServiceResponse<List<GetEmployeeDto>>> DeleteEmployee(int id);
-        Task<ServiceResponse<GetEmployeeDto>> GetEmployee(int id);
+        Task<ServiceResponse<GetEmployeeDto>> GetAllEmployee();
+        Task<ServiceResponse<GetEmployeeDto>> GetEmployeeById(int id);
+        
     }
 }
