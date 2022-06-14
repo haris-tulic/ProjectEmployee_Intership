@@ -21,7 +21,7 @@ namespace ProjectEmployee_Intership.Controllers
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request)
         {
             var response = await _authRepo.Register(
-                new User { Username = request.Username }, request.Password
+                new User { Username = request.Username }, request.Password, request.RoleId
             );
 
             if (!response.Success)

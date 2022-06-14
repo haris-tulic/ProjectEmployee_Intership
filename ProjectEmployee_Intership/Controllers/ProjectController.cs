@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Common.Enums;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
 using ProjectEmployee_Intership.Service.Interfaces;
-using System.Text.Json;
 
 namespace ProjectEmployee_IntershipAPI.Controllers
 {
@@ -19,9 +18,9 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             _service = service;
         }
         [HttpGet("[action]")]
-        public async Task<ActionResult<List<ProjectDto>>> GetAllActiveProjects(int ?pageNumber, int ?pageSize)
+        public async Task<ActionResult<List<ProjectDto>>> GetAllActiveProjects(int? pageNumber, int? pageSize)
         {
-            var response= await _service.GetAllProjects(pageNumber,pageSize);
+            var response = await _service.GetAllProjects(pageNumber, pageSize);
             if (response == null)
             {
                 return NotFound(response);
@@ -43,8 +42,8 @@ namespace ProjectEmployee_IntershipAPI.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<ProjectDto>> GetProjectById(int id)
         {
-            var response=await _service.GetProjectById(id);
-            if (response==null)
+            var response = await _service.GetProjectById(id);
+            if (response == null)
             {
                 return NotFound(response);
             }
@@ -54,14 +53,16 @@ namespace ProjectEmployee_IntershipAPI.Controllers
         public async Task<ActionResult<ProjectDto>> AddNewProject(AddProjectRequest newProject)
         {
             var response = await _service.AddProject(newProject);
-            if (response==null)
+            if (response == null)
             {
                 return NotFound(response);
             }
             return Ok(response);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{id}")]
-        public async Task<ActionResult<ProjectDto>> UpdateProject(AddProjectRequest updateProject,int id)
+        public async Task<ActionResult<ProjectDto>> UpdateProject(AddProjectRequest updateProject, int id)
         {
             var response = await _service.UpdateProject(updateProject, id);
             if (response == null)
@@ -74,7 +75,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
         public async Task<ActionResult<ProjectDto>> DeleteProject(int id)
         {
             var response = await _service.DeleteProject(id);
-            if (response==null)
+            if (response == null)
             {
                 return NotFound(response);
             }
