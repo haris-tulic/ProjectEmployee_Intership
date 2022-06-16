@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectEmployee_intership.Database;
+using ProjectEmployee_Intership.Common.Enums;
 using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
+using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Database;
 using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
@@ -78,11 +80,22 @@ namespace ProjectEmployee_Intership.Service.Services
 
         }
 
+     
+
         public async Task<ProjectDto> DeleteProject(int id)
         {
-
-            var project = await _context.Projects.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == id);
-            if (project == null)
+            try
+            {
+                var project = await _context.Projects.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == id);
+                if (project == null)
+                {
+                    throw new ArgumentException("Project doesn't exist!");
+                }
+                project.IsDeleted = true;
+                await _context.SaveChangesAsync();
+                return _mapper.Map<ProjectDto>(project);
+            }
+            catch (Exception ex)
             {
                 throw new ArgumentException("Project doesn't exist!");
             }
@@ -90,12 +103,16 @@ namespace ProjectEmployee_Intership.Service.Services
             await _context.SaveChangesAsync();
             return _mapper.Map<ProjectDto>(project);
 
-
+                throw new ArgumentException(ex.Message);
+            }
         }
 
+        public Task<List<ProjectDto>> End_Date()
         public async Task<List<ProjectDto>> GetAllProjects(int? pageNumber, int? pageSize)
         {
                 var listActiveProject = _context.Projects as IQueryable<Project>;
+                listActiveProject = listActiveProject.
+                    Include(p => p.Tasks).Include(p => p.Users).Include(p => p.Employee)
                 listActiveProject = listActiveProject.
                     Include(p => p.Tasks).Include(p => p.Users).Include("Users.Role").Include(p => p.Employee)
                     .Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active);
@@ -117,11 +134,15 @@ namespace ProjectEmployee_Intership.Service.Services
                 if (!string.IsNullOrWhiteSpace(search.ProjectName))
                 {
                     search.ProjectName = search.ProjectName.Trim();
+                    listProjects = listProjects.Where(x => x.ProjectName == search.ProjectName);
+                    search.ProjectName = search.ProjectName.Trim();
                     listProjects = listProjects.Where(x => x.ProjectName.Contains(search.ProjectName));
                 }
                 if (!string.IsNullOrWhiteSpace(search.FirstName))
                 {
                     search.FirstName = search.FirstName.Trim();
+                    var employee = await _context.Employees.FirstOrDefaultAsync(x => x.FirstName.Contains(search.FirstName));
+                    if (employee == null)
                     var employee = _context.Employees.FirstOrDefault(x => x.FirstName.Contains(search.FirstName));
                     if (employee != null)
                     {
@@ -131,6 +152,24 @@ namespace ProjectEmployee_Intership.Service.Services
                 var listActive = new List<Project>();
                 listActive = listProjects.ToList();
                 return _mapper.Map<List<ProjectDto>>(listActive);
+                var listProjectsM = _mapper.Map<List<ProjectDto>>(listProjects);
+                var sorted = listProjectsM.OrderBy(x => x.StartDate).ToList();
+                if (search.Sort != null)
+                {
+                    switch (search.Sort)
+                    {
+                        case "StartDate":
+                            sorted = listProjectsM.OrderBy(q => q.StartDate).ToList();
+                            break;
+                        case "FinishDate":
+                            sorted = listProjectsM.OrderBy(q => q.FinishDate).ToList();
+                            break;
+                        default:
+                            sorted = listProjectsM.OrderBy(q => q.StartDate).ToList();
+                            break;
+                    }
+                }
+                return listProjectsM;
             }
             catch (Exception ex)
             {
@@ -141,6 +180,8 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<ProjectDto> GetProjectById(int id)
         {
+            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+            if (project == null)
             var project = await _context.Projects.Include(p=> p.Tasks).Include(p=> p.Employee).Include(p=> p.Users).FirstOrDefaultAsync(x => x.Id == id);
             if (project == null)
             {
@@ -149,6 +190,22 @@ namespace ProjectEmployee_Intership.Service.Services
             return _mapper.Map<ProjectDto>(project);
         }
 
+       public async Task<ProjectDto> UpdateProject(AddProjectRequest request, int id)
+        {
+            try
+            {
+                var projectExist = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+                if (projectExist == null)
+                {
+                    throw new ArgumentException("Project doesn't exist!");
+                }
+                _mapper.Map(request, projectExist);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<ProjectDto>(projectExist);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
         public async Task<ServiceResponse<ProjectDto>> UpdateProject(AddProjectRequest request, int id)
         {
             var response = new ServiceResponse<ProjectDto>();
@@ -244,6 +301,14 @@ namespace ProjectEmployee_Intership.Service.Services
                 response.Data = null;
                 response.Message = "We didn't add user to project because user doesn't exist";
             }
+        }
+        
+       
+        
+    }
+
+        
+    
             return response;
         }
     }

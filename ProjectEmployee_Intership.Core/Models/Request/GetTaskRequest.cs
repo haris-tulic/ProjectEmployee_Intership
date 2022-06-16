@@ -18,5 +18,6 @@ namespace ProjectEmployee_Intership.Core.Models.Request
         public int ? PageNumber { get; set; }
         public int ? PageSize { get; set; }
         public int EmployeeId { get; set; }
+        public string ? Sort { get; set; }
     }
 }

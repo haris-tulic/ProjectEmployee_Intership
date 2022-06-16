@@ -247,7 +247,9 @@ namespace ProjectEmployee_Intership.Database.Migrations
                 {
                     b.HasOne("ProjectEmployee_Intership.Core.Entities.Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Project");
                 });

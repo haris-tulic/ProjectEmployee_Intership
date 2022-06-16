@@ -11,7 +11,10 @@ namespace ProjectEmployee_Intership.Service.Interfaces
         Task<ProjectDto> GetProjectById(int id);
         Task<ProjectDto> AddProject(AddProjectRequest newProject);
         Task<ProjectDto> DeleteProject(int id);
-        Task<ServiceResponse<ProjectDto>> UpdateProject(AddProjectRequest request, int id);
-        void  CheckStatusProject(int id);
+        Task<ProjectDto> UpdateProject(AddProjectRequest request, int id);
+        
+        
+        
+        
     }
 }

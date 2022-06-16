@@ -1,6 +1,8 @@
 ﻿using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectEmployee_Intership.Common.Enums;
+using ProjectEmployee_Intership.Core.Entities;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
 using ProjectEmployee_Intership.Models;
@@ -91,13 +93,70 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             }
             return Ok(response);
         }
-
-        [HttpPost("[action]")]
-        public ActionResult CheckStatus(int id)
+        
+       /* [HttpGet("{id}")]
+        public async Task<ActionResult<ProjectDto>> ChangeStatusById(int id)
         {
-             _recurringJobManager.AddOrUpdate("CheckStatusProject",() =>  _service.CheckStatusProject(id), Cron.Daily());
-            return Ok();
-        }
-    }
+            var response = await _service.CheckStatus(id);
+            if (response == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }*/
 
-}
+       
+
+
+
+
+
+
+
+
+
+
+
+        /*private string CreateProdjectsUri(GetProjectRequest paramaters,UriType type)
+        {
+            switch (type)
+            {
+                case UriType.PreviousPage:
+                    return Url.Link("GetAllActiveProjects", new
+                    {
+                        pageNumber = paramaters.PageNumber - 1,
+                        pageSize = paramaters.PageSize,
+                        ProjectName = paramaters.ProjectName,
+                        StartDate = paramaters.StartDate,
+                        FinishDate = paramaters.FinishDate,
+                        Status = paramaters.Status,
+                        FirstName = paramaters.FirstName,
+
+                    });
+                case UriType.NextPage:
+                    return Url.Link("GetAllActiveProjects", new
+                    {
+                        pageNumber = paramaters.PageNumber + 1,
+                        pageSize = paramaters.PageSize,
+                        ProjectName = paramaters.ProjectName,
+                        StartDate = paramaters.StartDate,
+                        FinishDate = paramaters.FinishDate,
+                        Status = paramaters.Status,
+                        FirstName = paramaters.FirstName,
+
+                    });
+                default:
+                    return Url.Link("GetAllActiveProjects", new
+                    {
+                        pageNumber = paramaters.PageNumber,
+                        pageSize = paramaters.PageSize,
+                        ProjectName = paramaters.ProjectName,
+                        StartDate = paramaters.StartDate,
+                        FinishDate = paramaters.FinishDate,
+                        Status = paramaters.Status,
+                        FirstName = paramaters.FirstName,
+
+                    });*/
+    }
+        }
+    
