@@ -4,25 +4,25 @@
 
 namespace ProjectEmployee_Intership.Database.Migrations
 {
-    public partial class ChangesInUserTable : Migration
+    public partial class ChangesInTask : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_Projects_ProjectId",
-                table: "Users");
+                name: "FK_Tasks_Projects_ProjectId",
+                table: "Tasks");
 
             migrationBuilder.AlterColumn<int>(
                 name: "ProjectId",
-                table: "Users",
+                table: "Tasks",
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Projects_ProjectId",
-                table: "Users",
+                name: "FK_Tasks_Projects_ProjectId",
+                table: "Tasks",
                 column: "ProjectId",
                 principalTable: "Projects",
                 principalColumn: "Id");
@@ -31,12 +31,12 @@ namespace ProjectEmployee_Intership.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_Projects_ProjectId",
-                table: "Users");
+                name: "FK_Tasks_Projects_ProjectId",
+                table: "Tasks");
 
             migrationBuilder.AlterColumn<int>(
                 name: "ProjectId",
-                table: "Users",
+                table: "Tasks",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,
@@ -45,12 +45,12 @@ namespace ProjectEmployee_Intership.Database.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Projects_ProjectId",
-                table: "Users",
+                name: "FK_Tasks_Projects_ProjectId",
+                table: "Tasks",
                 column: "ProjectId",
                 principalTable: "Projects",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
         }
     }
 }

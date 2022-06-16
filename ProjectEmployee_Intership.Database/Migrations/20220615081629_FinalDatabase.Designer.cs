@@ -12,8 +12,8 @@ using ProjectEmployee_intership.Database;
 namespace ProjectEmployee_Intership.Database.Migrations
 {
     [DbContext(typeof(ProjectUserContext))]
-    [Migration("20220614124001_ChangesInUserTable")]
-    partial class ChangesInUserTable
+    [Migration("20220615081629_FinalDatabase")]
+    partial class FinalDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,6 +65,9 @@ namespace ProjectEmployee_Intership.Database.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()

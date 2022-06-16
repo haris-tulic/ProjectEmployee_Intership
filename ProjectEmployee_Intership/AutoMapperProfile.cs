@@ -33,6 +33,10 @@ namespace ProjectEmployee_Intership
             CreateMap<Project, GetProjectRequest>().ReverseMap();
             CreateMap<Project, ProjectDto>().ReverseMap();
 
+
+            CreateMap<AddEmployeeDto, Employee>().ReverseMap();
+            CreateMap<Employee, EmployeeDto>().ReverseMap();
+            CreateMap<GetEmployeeDto, Employee>().ReverseMap();
         }
     }
 }

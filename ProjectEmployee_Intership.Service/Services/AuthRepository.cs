@@ -29,13 +29,16 @@ namespace ProjectEmployee_Intership.Service.Services
             var user = await _context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Username.ToLower().Equals(username.ToLower()));
             if (user == null)
             {
+
                 response.Success = false;
                 response.Message = "User not found.";
+                throw new ArgumentException("User not found.");
             }
             else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 response.Success = false;
-                response.Message = "Wrong password.";
+                response.Message = "Wrong username or password.";
+                throw new ArgumentException("Wrong username or password");
             }
             else
             {
