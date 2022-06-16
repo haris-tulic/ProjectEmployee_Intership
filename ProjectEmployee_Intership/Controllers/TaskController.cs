@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
+using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
 
 namespace ProjectEmployee_IntershipAPI.Controllers
 {
+   // [Authorize (Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
@@ -37,7 +39,6 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<TasksDto>> GetTaskById(int id)
         {
@@ -49,13 +50,12 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
         [HttpPost("[action]")]
-        public async Task<ActionResult<TasksDto>> AddNewTask(AddTaskRequest newTask)
+        public async Task<ActionResult<ServiceResponse<TasksDto>>> AddNewTask(AddTaskRequest newTask)
         {
             var response = await _service.AddNewTask(newTask);
 
-            if (response == null)
+            if (!response.Success)
             {
                 return NotFound(response);
             }
@@ -83,7 +83,6 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             }
             return Ok(response);
         }
-        [Authorize(Roles = "User")]
         [HttpPost("[action]")]
         public async Task<ActionResult<TasksDto>> AssingTaskToUser(int projectId, int userId, int taskId)
         {
@@ -96,7 +95,6 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "User")]
         [HttpPut("[action]/{id}")]
         public async Task<ActionResult<TasksDto>> FinishTask(int id)
         {

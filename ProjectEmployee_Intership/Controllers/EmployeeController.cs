@@ -3,13 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
-using ProjectEmployee_Intership.Dto;
-using ProjectEmployee_Intership.Core.Models.Dto;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectEmployee_Intership.Controllers
 {
-    [Authorize(Roles = "Admin")]
+   // [Authorize(Roles = "Admin")]
     [Route("api/[Controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -20,36 +17,71 @@ namespace ProjectEmployee_Intership.Controllers
         {
             _employeeService = employeeService;
         }
-        
-        [HttpGet]
-        public async Task<ActionResult<ServiceResponse<GetEmployeeDto>>> GetAllEmploye()
+
+        [HttpGet ("[action]")]
+        public async Task<ActionResult<ServiceResponse<List<GetEmployeeDto>>>> GetAllEmploye()
         {
-            return Ok(await _employeeService.GetAllEmployee());
+            var response = await _employeeService.GetAllEmployee();
+            if (response == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
 
 
         }
-
-        [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<GetEmployeeDto>>>> AddCharacter(AddEmployeeDto newEmployee)
+        [HttpPost("[action]")]
+        public async Task<ActionResult<ServiceResponse<List<GetEmployeeDto>>>> AddEmployee(AddEmployeeDto newEmployee)
         {
-            return Ok(await _employeeService.AddEmployee(newEmployee));
+            var response = await _employeeService.AddEmployee(newEmployee);
+            if (response == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
         }
-       
-        [HttpGet("{id}")]
+
+        [HttpGet("[action]/{id}")]
         public async Task<ActionResult<ServiceResponse<GetEmployeeDto>>> GetEmployeById(int id)
         {
-            return Ok(await _employeeService.GetEmployeeById(id));
+            var response = await _employeeService.GetEmployeeById(id);
+            if (response == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
 
 
         }
 
+        [HttpDelete("[action]/{id}")]
+        public async Task<ActionResult<ServiceResponse<GetEmployeeDto>>> DeleteEmployee(int id)
+        {
+            var response = await _employeeService.DeleteEmployee(id);
+            if (response == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);    
+        }
 
-       
-       
+        [HttpPut("[action]/{id}")]
+        public async Task<ActionResult<ServiceResponse<GetEmployeeDto>>> UpdateEmployee(AddEmployeeDto updateEmployee, int id)
+        {
+            var response = await _employeeService.UpdateEmployee(updateEmployee, id);
+            if (response == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+
+
+
 
     }
 
-    }
+}
 
 
 

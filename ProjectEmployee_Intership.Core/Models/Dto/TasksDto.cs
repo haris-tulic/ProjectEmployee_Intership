@@ -4,7 +4,7 @@
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<EmployeeDto> Employee { get; set; }
+        public List<EmployeeDto> Employees { get; set; }
         public bool IsFinished { get; set; } 
         public DateTime DeadLine { get; set; }
         public List<UserDto> Users { get; set; }
