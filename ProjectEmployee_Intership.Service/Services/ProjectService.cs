@@ -107,7 +107,7 @@ namespace ProjectEmployee_Intership.Service.Services
             }
         }
 
-        public Task<List<ProjectDto>> End_Date()
+        
         public async Task<List<ProjectDto>> GetAllProjects(int? pageNumber, int? pageSize)
         {
                 var listActiveProject = _context.Projects as IQueryable<Project>;
