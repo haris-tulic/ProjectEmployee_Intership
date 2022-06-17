@@ -129,14 +129,35 @@ namespace ProjectEmployee_Intership.Service.Services
                     }
                 }
                 var listActive = new List<Project>();
+                var sorted = new List<Project>();
                 listActive = listProjects.ToList();
-                return _mapper.Map<List<ProjectDto>>(listActive);
+                if (search.OrderBy != null)
+                {
+                    switch (search.OrderBy)
+                    {
+                        case "StartDate":
+                            sorted = listActive.OrderBy(q => q.StartDate).ToList();
+                            break;
+                        case "FinishDate":
+                            sorted = listActive.OrderBy(q => q.FinishDate).ToList();
+                            break;
+                        default:
+                            sorted = listActive.OrderBy(q => q.StartDate).ToList();
+                            break;
+                    }
+                    
+                }
+                return _mapper.Map<List<ProjectDto>>(sorted);
             }
             catch (Exception ex)
             {
 
                 throw new ArgumentException(ex.Message);
             }
+            
+
+            
+           
         }
 
         public async Task<ProjectDto> GetProjectById(int id)
