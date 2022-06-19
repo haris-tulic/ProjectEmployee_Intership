@@ -10,7 +10,7 @@ The project also supports that user can select a specific project where he is sh
 
 # Technologies
 
-•	ASP .NET 5.0 Web API, 
+•	ASP .NET 6.0 Web API, 
 
 •	Microsoft SQL Server, 
 
