@@ -6,7 +6,7 @@ Some of the functionalities of the project include creating, reading, updating a
 Another thing the user is able to filter projects by employee name and sort by end or start date.
 
 
-The project also supportts that user can select a specific project where he is shown all the information related to the project. The user can filter work tasks by whether the task is assigned to someone or not, by employee, whether completed or not, by the date of the task deadline, by name, by job description. Tasks are shown with pagination.
+The project also supports that user can select a specific project where he is shown all the information related to the project. The user can filter work tasks by whether the task is assigned to someone or not, by employee, whether completed or not, by the date of the task deadline, by name, by job description. Tasks are shown with pagination.
 
 # Technologies
 
