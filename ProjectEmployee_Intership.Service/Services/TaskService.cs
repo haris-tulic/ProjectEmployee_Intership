@@ -38,16 +38,16 @@ namespace ProjectEmployee_Intership.Service.Services
                 response.Message = userExist.Message;
             }
 
-            var projectExist = await ProjectExist(request.ProjectId,newTask);
+            var projectExist = await ProjectExist(request.ProjectId, newTask);
             if (!projectExist.Success)
             {
-                response.Message += " "+ projectExist.Message;
+                response.Message += " " + projectExist.Message;
             }
 
-            var employee = await EmployeeExist(request.EmployeeId,newTask);
+            var employee = await EmployeeExist(request.EmployeeId, newTask);
             if (!employee.Success)
             {
-                response.Message +=" "+ employee.Message;
+                response.Message += " " + employee.Message;
             }
 
             _context.Tasks.Add(newTask);
@@ -78,19 +78,19 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<TasksDto> AssingTaskToUser(int userId, int projectId, int taskId)
         {
-                var userExist = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId && !x.IsDeleted);
-                var userOnProject = await _context.Projects.FirstOrDefaultAsync(x => x.Users.Contains(userExist) && x.Id == projectId && !x.IsDeleted);
-                var task = await _context.Tasks.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == taskId);
-                if (task == null || userExist == null || userOnProject == null)
-                {
-                    throw new ArgumentException("User can't assing task to yourself!");
-                }
-                if (!userExist.Tasks.Contains(task))
-                {
-                    userExist.Tasks.Add(task);
-                }
-                await _context.SaveChangesAsync();
-                return _mapper.Map<TasksDto>(task);
+            var userExist = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId && !x.IsDeleted);
+            var userOnProject = await _context.Projects.FirstOrDefaultAsync(x => x.Users.Contains(userExist) && x.Id == projectId && !x.IsDeleted);
+            var task = await _context.Tasks.Include(t => t.Users).FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == taskId);
+            if (task == null || userExist == null || userOnProject == null)
+            {
+                throw new ArgumentException("User can't assing task to yourself!");
+            }
+            if (!task.Users.Contains(userExist))
+            {
+                task.Users.Add(userExist);
+            }
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TasksDto>(task);
         }
 
         public async Task<TasksDto> DeleteTask(int id)
@@ -134,17 +134,17 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<List<TasksDto>> GetAllTasks()
         {
-                var tasks = await _context.Tasks
-                    .Include(x => x.Project)
-                    .Include(x => x.Users)
-                    .Include(x=>x.Employees)
-                    .Include("Users.Role")
-                    .Where(x => !x.IsDeleted).ToListAsync();
-                if (tasks == null)
-                {
-                    throw new ArgumentException("Tasks doesn't exists!");
-                }
-                return _mapper.Map<List<TasksDto>>(tasks);
+            var tasks = await _context.Tasks
+                .Include(x => x.Project)
+                .Include(x => x.Users)
+                .Include(x => x.Employees)
+                .Include("Users.Role")
+                .Where(x => !x.IsDeleted).ToListAsync();
+            if (tasks == null)
+            {
+                throw new ArgumentException("Tasks doesn't exists!");
+            }
+            return _mapper.Map<List<TasksDto>>(tasks);
         }
 
         public async Task<List<TasksDto>> GetAllTasksByParamaters(GetTaskRequest search)
@@ -196,7 +196,7 @@ namespace ProjectEmployee_Intership.Service.Services
         {
             try
             {
-                var task = await _context.Tasks.Include(x=>x.Employees).Include(x=>x.Users).Include(x=>x.Project).FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+                var task = await _context.Tasks.Include(x => x.Employees).Include(x => x.Users).Include(x => x.Project).FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
                 if (task == null)
                 {
                     throw new ArgumentException("Task doesn't exist!");
@@ -263,7 +263,7 @@ namespace ProjectEmployee_Intership.Service.Services
                 newTask.Project = projectExist;
                 response.Data = projectExist;
                 response.Success = true;
-               return response;
+                return response;
             }
 
             response.Success = false;

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
 using ProjectEmployee_Intership.Models;
@@ -7,7 +6,7 @@ using ProjectEmployee_Intership.Service.Interfaces;
 
 namespace ProjectEmployee_IntershipAPI.Controllers
 {
-   // [Authorize (Roles = "User")]
+    // [Authorize (Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase

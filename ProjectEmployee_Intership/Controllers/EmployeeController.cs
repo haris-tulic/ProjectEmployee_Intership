@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
 
 namespace ProjectEmployee_Intership.Controllers
 {
-   // [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [Route("api/[Controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -18,7 +17,7 @@ namespace ProjectEmployee_Intership.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet ("[action]")]
+        [HttpGet("[action]")]
         public async Task<ActionResult<ServiceResponse<List<GetEmployeeDto>>>> GetAllEmploye()
         {
             var response = await _employeeService.GetAllEmployee();
@@ -62,7 +61,7 @@ namespace ProjectEmployee_Intership.Controllers
             {
                 return NotFound(response);
             }
-            return Ok(response);    
+            return Ok(response);
         }
 
         [HttpPut("[action]/{id}")]

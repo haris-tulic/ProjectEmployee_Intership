@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ProjectEmployee_Intership.Database;
+﻿using ProjectEmployee_Intership.Database;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectEmployee_Intership.Core.Entities
 {
@@ -11,7 +10,7 @@ namespace ProjectEmployee_Intership.Core.Entities
         public string Name { get; set; }
         public bool IsDeleted { get; set; } = false;
         public string Description { get; set; }
-        public Project ?Project { get; set; }
+        public Project? Project { get; set; }
         public List<User> Users { get; set; }
         public bool IsFinished { get; set; } = false;
         public DateTime DeadLine { get; set; }
