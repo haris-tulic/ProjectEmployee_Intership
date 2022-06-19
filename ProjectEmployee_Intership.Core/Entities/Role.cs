@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ProjectEmployee_Intership.Database;
+﻿using ProjectEmployee_Intership.Database;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace ProjectEmployee_Intership.Core.Entities
@@ -13,4 +13,3 @@ namespace ProjectEmployee_Intership.Core.Entities
         public List<User> Users { get; set; }
     }
 }
-    

@@ -5,7 +5,7 @@ namespace ProjectEmployee_Intership.Core.Models.Dto
 {
     internal class DeleteEmployeeDto
     {
-        
+
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

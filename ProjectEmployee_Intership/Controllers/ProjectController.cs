@@ -1,5 +1,4 @@
 ﻿using Hangfire;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
@@ -31,13 +30,13 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             }
             return Ok(response);
         }
-        
+
         //[Authorize(Roles = "User")]
         [HttpGet("[action]")]
         public async Task<ActionResult<List<ProjectDto>>> GetAllProjectsWithFillters([FromQuery] GetProjectRequest search)
         {
             var response = await _service.GetAllProjectsWithFillters(search);
-            if (response == null) 
+            if (response == null)
             {
                 return NotFound(response);
             }
@@ -68,7 +67,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{id}")]
         public async Task<ActionResult<ServiceResponse<ProjectDto>>> UpdateProject(AddProjectRequest updateProject, int id)
         {
@@ -80,7 +79,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpDelete("[action]/{id}")]
         public async Task<ActionResult<ProjectDto>> DeleteProject(int id)
         {
@@ -95,7 +94,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
         [HttpPost("[action]")]
         public ActionResult CheckStatus(int id)
         {
-             _recurringJobManager.AddOrUpdate("CheckStatusProject",() =>  _service.CheckStatusProject(id), Cron.Daily());
+            _recurringJobManager.AddOrUpdate("CheckStatusProject", () => _service.CheckStatusProject(id), Cron.Daily());
             return Ok();
         }
     }

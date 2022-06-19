@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProjectEmployee_Intership.Core\ProjectEmployee_Intership.Core.csproj" />
-    <ProjectReference Include="..\ProjectEmployee_Intership.Database\ProjectEmployee_Intership.Database.csproj" />
-    <ProjectReference Include="..\ProjectEmployee_Intership.Service\ProjectEmployee_Intership.Service.csproj" />
+    <ProjectReference Include="..\ProjectEmployee_Intership.Core\ProjectEmployeeIntership.Core.csproj" />
+    <ProjectReference Include="..\ProjectEmployee_Intership.Database\ProjectEmployeeIntership.Database.csproj" />
+    <ProjectReference Include="..\ProjectEmployee_Intership.Service\ProjectEmployeeIntership.Service.csproj" />
   </ItemGroup>
 
 </Project>

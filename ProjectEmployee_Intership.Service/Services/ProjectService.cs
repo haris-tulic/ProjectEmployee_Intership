@@ -32,7 +32,7 @@ namespace ProjectEmployee_Intership.Service.Services
                 if (taskExist == null)
                     throw new ArgumentException("Task doesn't exist!");
 
-                project.Tasks = new List<Tasks>(); 
+                project.Tasks = new List<Tasks>();
                 project.Tasks.Add(taskExist);
             }
 
@@ -44,18 +44,18 @@ namespace ProjectEmployee_Intership.Service.Services
                     throw new ArgumentException("Employee doesn't exist!");
                 project.Employee = new List<Employee>();
                 project.Employee.Add(employeeExist);
-                
+
             }
 
 
             if (!string.IsNullOrWhiteSpace(newProject.UserId.ToString()) && newProject.UserId.ToString() != "0")
             {
-                var userExist = await _context.Users.Include(u=> u.Tasks).Include(u=>u.Role).FirstOrDefaultAsync(u => u.Id == newProject.UserId && !u.IsDeleted);
+                var userExist = await _context.Users.Include(u => u.Tasks).Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == newProject.UserId && !u.IsDeleted);
                 if (userExist == null)
                     throw new ArgumentException("User doesn't exist!");
                 project.Users = new List<User>();
-                project.Users.Add(userExist); 
-               
+                project.Users.Add(userExist);
+
             }
 
             _context.Projects.Add(project);
@@ -65,7 +65,7 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public void CheckStatusProject(int id)
         {
-            var project =  _context.Projects.FirstOrDefault(p => p.Id == id && !p.IsDeleted);
+            var project = _context.Projects.FirstOrDefault(p => p.Id == id && !p.IsDeleted);
             if (project == null)
             {
                 throw new ArgumentException("Project doesn't exist");
@@ -95,18 +95,18 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<List<ProjectDto>> GetAllProjects(int? pageNumber, int? pageSize)
         {
-                var listActiveProject = _context.Projects as IQueryable<Project>;
-                listActiveProject = listActiveProject.
-                    Include(p => p.Tasks).Include(p => p.Users).Include("Users.Role").Include(p => p.Employee)
-                    .Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active);
-               
-                if (listActiveProject == null)
-                    throw new ArgumentException("Projects doens't exist!");
-                
-                var pgNumber = pageNumber ?? 1;
-                var pgSize = pageSize ?? 5;
-                var list = await listActiveProject.Skip(pgSize * (pgNumber - 1)).Take(pgSize).ToListAsync();
-                return _mapper.Map<List<ProjectDto>>(list);
+            var listActiveProject = _context.Projects as IQueryable<Project>;
+            listActiveProject = listActiveProject.
+                Include(p => p.Tasks).ThenInclude(p => p.Employees).Include("Tasks.Users").Include(p => p.Users).ThenInclude(p => p.Role).Include(p => p.Employee)
+                .Where(x => !x.IsDeleted && x.Status == Common.Enums.StatusProject.Active);
+
+            if (listActiveProject == null)
+                throw new ArgumentException("Projects doens't exist!");
+
+            var pgNumber = pageNumber ?? 1;
+            var pgSize = pageSize ?? 5;
+            var list = await listActiveProject.Skip(pgSize * (pgNumber - 1)).Take(pgSize).ToListAsync();
+            return _mapper.Map<List<ProjectDto>>(list);
         }
 
         public async Task<List<ProjectDto>> GetAllProjectsWithFillters(GetProjectRequest search)
@@ -145,7 +145,7 @@ namespace ProjectEmployee_Intership.Service.Services
                             sorted = listActive.OrderBy(q => q.StartDate).ToList();
                             break;
                     }
-                    
+
                 }
                 return _mapper.Map<List<ProjectDto>>(sorted);
             }
@@ -154,15 +154,15 @@ namespace ProjectEmployee_Intership.Service.Services
 
                 throw new ArgumentException(ex.Message);
             }
-            
 
-            
-           
+
+
+
         }
 
         public async Task<ProjectDto> GetProjectById(int id)
         {
-            var project = await _context.Projects.Include(p=> p.Tasks).Include(p=> p.Employee).Include(p=> p.Users).FirstOrDefaultAsync(x => x.Id == id);
+            var project = await _context.Projects.Include(p => p.Tasks).Include(p => p.Employee).Include(p => p.Users).FirstOrDefaultAsync(x => x.Id == id);
             if (project == null)
             {
                 throw new ArgumentException("Project doesn't exist");
@@ -234,7 +234,7 @@ namespace ProjectEmployee_Intership.Service.Services
             var response = new ServiceResponse<Employee>();
             if (EmployeeId.HasValue)
             {
-                var employee = await _context.Employees.Include(x=> x.Tasks).Include(x=>x.Projects).FirstOrDefaultAsync(e => e.Id == EmployeeId && !e.IsDeleted);
+                var employee = await _context.Employees.Include(x => x.Tasks).Include(x => x.Projects).FirstOrDefaultAsync(e => e.Id == EmployeeId && !e.IsDeleted);
                 if (employee != null)
                 {
                     project.Employee.Add(employee);
@@ -253,7 +253,7 @@ namespace ProjectEmployee_Intership.Service.Services
             var response = new ServiceResponse<User>();
             if (UserId.HasValue)
             {
-                var user = await _context.Users.Include(x=> x.Role).FirstOrDefaultAsync(e => e.Id == UserId && !e.IsDeleted && e.Role.Name.Contains("User"));
+                var user = await _context.Users.Include(x => x.Role).FirstOrDefaultAsync(e => e.Id == UserId && !e.IsDeleted && e.Role.Name.Contains("User"));
                 if (user != null)
                 {
                     project.Users.Add(user);

@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ProjectEmployee_Intership.Core.Entities;
+﻿using ProjectEmployee_Intership.Core.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectEmployee_Intership.Database
 {
@@ -11,10 +10,9 @@ namespace ProjectEmployee_Intership.Database
         public Role Role { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public bool IsDeleted { get; set; }=false;
+        public bool IsDeleted { get; set; } = false;
         public Project? Project { get; set; }
         public List<Tasks> Tasks { get; set; }
         public string Username { get; set; }
     }
 }
-    

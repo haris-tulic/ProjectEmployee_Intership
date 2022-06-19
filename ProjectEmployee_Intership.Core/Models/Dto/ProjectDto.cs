@@ -1,10 +1,4 @@
 ﻿using ProjectEmployee_Intership.Common.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjectEmployee_Intership.Common.Enums;
 
 namespace ProjectEmployee_Intership.Core.Models.Dto
 {

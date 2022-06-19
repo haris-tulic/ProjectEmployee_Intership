@@ -1,22 +1,20 @@
+using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectEmployee_intership.Database;
 using ProjectEmployee_Intership.Service.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using ProjectEmployee_Intership.Service.Services;
-using Swashbuckle.AspNetCore.Filters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Configuration;
 using ProjectEmployee_IntershipAPI.Middlware;
-using Hangfire;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 var connection = builder.Configuration.GetConnectionString("ProjectEmployee");
-builder.Services.AddHangfire(X=> X.UseSqlServerStorage(connection));
+builder.Services.AddHangfire(X => X.UseSqlServerStorage(connection));
 builder.Services.AddHangfireServer();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

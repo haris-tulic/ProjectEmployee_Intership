@@ -98,7 +98,7 @@ namespace ProjectEmployee_Intership.Service.Services
             var response = new ServiceResponse<List<GetEmployeeDto>>();
 
 
-            var dbEmployee = await _context.Employees.Include(e=> e.Tasks).Include(e=> e.Tasks).Where(e=> !e.IsDeleted).ToListAsync();
+            var dbEmployee = await _context.Employees.Include(e => e.Tasks).Include(e => e.Tasks).Where(e => !e.IsDeleted).ToListAsync();
             if (dbEmployee == null)
             {
                 throw new ArgumentException("Employees doesn't exist!");

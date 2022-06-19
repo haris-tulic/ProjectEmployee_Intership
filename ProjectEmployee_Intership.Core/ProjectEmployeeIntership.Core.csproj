@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Validator\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Hangfire" Version="1.7.30" />
-    <PackageReference Include="Hangfire.Core" Version="1.7.30" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.7.30" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
@@ -22,9 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProjectEmployee_Intership.Core\ProjectEmployee_Intership.Core.csproj" />
-    <ProjectReference Include="..\ProjectEmployee_Intership.Database\ProjectEmployee_Intership.Database.csproj" />
-    <ProjectReference Include="..\ProjectEmployee_Intership.Mapper\ProjectEmployee_Intership.Mapper.csproj" />
+    <ProjectReference Include="..\ProjectEmployee_Intership.Common\ProjectEmployeeIntership.Common.csproj" />
   </ItemGroup>
 
 </Project>

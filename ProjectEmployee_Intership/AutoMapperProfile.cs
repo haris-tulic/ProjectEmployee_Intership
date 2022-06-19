@@ -6,7 +6,7 @@ using ProjectEmployee_Intership.Database;
 
 namespace ProjectEmployee_Intership
 {
-    public class AutoMapperProfile:Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
         {
@@ -14,20 +14,20 @@ namespace ProjectEmployee_Intership
             CreateMap<Tasks, GetTaskRequest>().ReverseMap();
             CreateMap<Tasks, TasksDto>().ReverseMap();
 
-            CreateMap<Project,GetProjectRequest>().ReverseMap();
+            CreateMap<Project, GetProjectRequest>().ReverseMap();
             CreateMap<AddProjectRequest, Project>().ReverseMap();
             CreateMap<ProjectDto, Project>().ReverseMap();
 
             CreateMap<Role, GetRoleRequest>().ReverseMap();
-            CreateMap<Role,RoleDto>().ReverseMap();
+            CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<RoleDto, Role>().ReverseMap();
 
             CreateMap<AddRoleRequest, Role>().ReverseMap();
-                
 
-            CreateMap<GetUserRequest,User >().ReverseMap();
+
+            CreateMap<GetUserRequest, User>().ReverseMap();
             CreateMap<AddUserRequest, User>().ReverseMap();
-            CreateMap<User,UserDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
 
             CreateMap<AddProjectRequest, Project>().ReverseMap();
             CreateMap<Project, GetProjectRequest>().ReverseMap();
