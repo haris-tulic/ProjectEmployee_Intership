@@ -34,7 +34,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasIndex("ProjectsId");
 
-                    b.ToTable("EmployeeProject", (string)null);
+                    b.ToTable("EmployeeProject");
                 });
 
             modelBuilder.Entity("EmployeeTasks", b =>
@@ -49,7 +49,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasIndex("TasksId");
 
-                    b.ToTable("EmployeeTasks", (string)null);
+                    b.ToTable("EmployeeTasks");
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Employee", b =>
@@ -73,7 +73,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Project", b =>
@@ -102,7 +102,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Role", b =>
@@ -122,7 +122,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Core.Entities.Tasks", b =>
@@ -157,7 +157,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("ProjectEmployee_Intership.Database.User", b =>
@@ -195,7 +195,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TasksUser", b =>
@@ -210,7 +210,7 @@ namespace ProjectEmployee_Intership.Database.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("TasksUser", (string)null);
+                    b.ToTable("TasksUser");
                 });
 
             modelBuilder.Entity("EmployeeProject", b =>
