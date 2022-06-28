@@ -111,9 +111,8 @@ namespace ProjectEmployee_Intership.Service.Services
         public async Task<ServiceResponse<GetEmployeeDto>> GetEmployeeById(int id)
         {
             var response = new ServiceResponse<GetEmployeeDto>();
-            try
-            {
-                var employee = await _context.Employees
+           
+                var employee = await _context.Employees.Include(e=>e.Tasks).Include(e=>e.Projects)
                     .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
                 if (employee == null)
                 {
@@ -124,13 +123,7 @@ namespace ProjectEmployee_Intership.Service.Services
                 }
                 response.Success = true;
                 response.Data = _mapper.Map<GetEmployeeDto>(employee);
-
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = ex.Message;
-            }
+            
             return response;
         }
 

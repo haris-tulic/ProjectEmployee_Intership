@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Models;
 using ProjectEmployee_Intership.Service.Interfaces;
 
 namespace ProjectEmployee_Intership.Controllers
 {
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/[Controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase

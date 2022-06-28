@@ -22,8 +22,6 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<RoleDto> AddNewRole(AddRoleRequest newRole)
         {
-            try
-            {
                 var role = _mapper.Map<Role>(newRole);
                 if (await RoleExist(newRole))
                 {
@@ -32,12 +30,6 @@ namespace ProjectEmployee_Intership.Service.Services
                 _context.Roles.Add(role);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<RoleDto>(role);
-            }
-            catch (Exception ex)
-            {
-
-                throw new ArgumentException(ex.Message);
-            }
         }
 
         public async Task<RoleDto> GetById(int id)
@@ -52,20 +44,13 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<List<RoleDto>> GetRole()
         {
-            try
-            {
+           
                 var roles = await _context.Roles.Include(x => x.Users).Where(x => !x.IsDeleted).ToListAsync();
                 if (roles == null)
                 {
                     throw new ArgumentException("Roles doesn't exist!");
                 }
                 return _mapper.Map<List<RoleDto>>(roles);
-            }
-            catch (Exception ex)
-            {
-
-                throw new ArgumentException(ex.Message);
-            }
 
         }
         private async Task<bool> RoleExist(AddRoleRequest role)

@@ -95,41 +95,23 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<TasksDto> DeleteTask(int id)
         {
-            try
+
+            var task = await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (task == null)
             {
-                var task = await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
-                if (task == null)
-                {
-                    throw new ArgumentException("Task doesn't exist!");
-                }
-                task.IsDeleted = true;
-                await _context.SaveChangesAsync();
-                return _mapper.Map<TasksDto>(task);
-
+                throw new ArgumentException("Task doesn't exist!");
             }
-            catch (Exception ex)
-            {
-
-                throw new ArgumentException(ex.Message);
-            }
-
+            task.IsDeleted = true;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TasksDto>(task);
         }
 
         public async Task<TasksDto> FinishTask(int id)
         {
-            try
-            {
-                var task = await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
-                task.IsFinished = true;
-                await _context.SaveChangesAsync();
-                return _mapper.Map<TasksDto>(task);
-
-            }
-            catch (Exception ex)
-            {
-
-                throw new ArgumentException(ex.Message);
-            }
+            var task = await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            task.IsFinished = true;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TasksDto>(task);
         }
 
         public async Task<List<TasksDto>> GetAllTasks()
@@ -149,82 +131,61 @@ namespace ProjectEmployee_Intership.Service.Services
 
         public async Task<List<TasksDto>> GetAllTasksByParamaters(GetTaskRequest search)
         {
-            try
-            {
-                var tasks = _context.Tasks.Include(x => x.Project).Include(x => x.Users).
-                    AsQueryable();
-                if (!string.IsNullOrWhiteSpace(search.Name))
-                {
-                    search.Name = search.Name.Trim();
-                    tasks = tasks.Where(x => x.Name == search.Name);
-                }
-                if (!string.IsNullOrWhiteSpace(search.Description))
-                {
-                    search.Description = search.Description.Trim();
-                    tasks = tasks.Where(x => x.Description == search.Description);
-                }
-                if (!string.IsNullOrWhiteSpace(search.DeadLine.ToString()))
-                {
-                    tasks = tasks.Where(x => x.DeadLine == search.DeadLine);
-                }
-                if (!string.IsNullOrWhiteSpace(search.IsFinished.ToString()))
-                {
-                    tasks = tasks.Where(x => x.IsFinished == search.IsFinished);
-                }
-                if (!string.IsNullOrWhiteSpace(search.UserId.ToString()))
-                {
-                    tasks = tasks.Where(x => x.Users.Any(x => x.Id == search.UserId));
-                }
-                if (!string.IsNullOrWhiteSpace(search.EmployeeId.ToString()))
-                {
-                    tasks = tasks.Where(x => x.Employees.Any(x => x.Id == search.EmployeeId));
-                }
-                var pageNumber = search.PageNumber ?? 1;
-                var pageSize = search.PageSize ?? 5;
-                var listTasks = await tasks.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
-                return _mapper.Map<List<TasksDto>>(listTasks);
-            }
 
-            catch (Exception ex)
+            var tasks = _context.Tasks.Include(x => x.Project).Include(x => x.Users).
+                AsQueryable();
+            if (!string.IsNullOrWhiteSpace(search.Name))
             {
-
-                throw new ArgumentException(ex.Message);
+                search.Name = search.Name.Trim();
+                tasks = tasks.Where(x => x.Name == search.Name);
             }
+            if (!string.IsNullOrWhiteSpace(search.Description))
+            {
+                search.Description = search.Description.Trim();
+                tasks = tasks.Where(x => x.Description == search.Description);
+            }
+            if (!string.IsNullOrWhiteSpace(search.DeadLine.ToString()))
+            {
+                tasks = tasks.Where(x => x.DeadLine == search.DeadLine);
+            }
+            if (!string.IsNullOrWhiteSpace(search.IsFinished.ToString()))
+            {
+                tasks = tasks.Where(x => x.IsFinished == search.IsFinished);
+            }
+            if (!string.IsNullOrWhiteSpace(search.UserId.ToString()))
+            {
+                tasks = tasks.Where(x => x.Users.Any(x => x.Id == search.UserId));
+            }
+            if (!string.IsNullOrWhiteSpace(search.EmployeeId.ToString()))
+            {
+                tasks = tasks.Where(x => x.Employees.Any(x => x.Id == search.EmployeeId));
+            }
+            var pageNumber = search.PageNumber ?? 1;
+            var pageSize = search.PageSize ?? 5;
+            var listTasks = await tasks.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
+            return _mapper.Map<List<TasksDto>>(listTasks);
+
         }
 
         public async Task<TasksDto> GetTaskById(int id)
         {
-            try
-            {
-                var task = await _context.Tasks.Include(x => x.Employees).Include(x => x.Users).Include(x => x.Project).FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
-                if (task == null)
-                {
-                    throw new ArgumentException("Task doesn't exist!");
-                }
-                return _mapper.Map<TasksDto>(task);
-            }
-            catch (Exception)
-            {
 
-                throw new ArgumentException("Task doesn't exist");
+            var task = await _context.Tasks.Include(x => x.Employees).Include(x => x.Users).Include(x => x.Project).FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (task == null)
+            {
+                throw new ArgumentException("Task doesn't exist!");
             }
+            return _mapper.Map<TasksDto>(task);
+
         }
 
         public async Task<TasksDto> UpdateTask(AddTaskRequest request, int id)
         {
-            try
-            {
-                var entity = _mapper.Map<Task>(request);
-                var task = await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
-                _mapper.Map(entity, task);
-                await _context.SaveChangesAsync();
-                return _mapper.Map<TasksDto>(task);
-            }
-            catch (Exception ex)
-            {
-
-                throw new ArgumentException(ex.Message);
-            }
+            var entity = _mapper.Map<Task>(request);
+            var task = await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            _mapper.Map(entity, task);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TasksDto>(task);
         }
         private async Task<ServiceResponse<User>> UserDoesExist(int? userId, int? projectId, Tasks newTask)
         {

@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectEmployee_Intership.Core.Models.Dto;
 using ProjectEmployee_Intership.Core.Models.Request;
@@ -19,7 +20,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             _recurringJobManager = recurringJobManager;
         }
 
-        // [Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         [HttpGet("[action]")]
         public async Task<ActionResult<List<ProjectDto>>> GetAllActiveProjects(int? pageNumber, int? pageSize)
         {
@@ -31,7 +32,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         [HttpGet("[action]")]
         public async Task<ActionResult<List<ProjectDto>>> GetAllProjectsWithFillters([FromQuery] GetProjectRequest search)
         {
@@ -43,7 +44,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<ProjectDto>> GetProjectById(int id)
         {
@@ -55,7 +56,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<ActionResult<ProjectDto>> AddNewProject(AddProjectRequest newProject)
         {
@@ -67,7 +68,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{id}")]
         public async Task<ActionResult<ServiceResponse<ProjectDto>>> UpdateProject(AddProjectRequest updateProject, int id)
         {
@@ -79,7 +80,7 @@ namespace ProjectEmployee_IntershipAPI.Controllers
             return Ok(response);
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("[action]/{id}")]
         public async Task<ActionResult<ProjectDto>> DeleteProject(int id)
         {
